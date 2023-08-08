@@ -1,0 +1,37 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Car {
+  id          Int       @id @default(autoincrement())
+  vin         String    @unique(map: "car_vin_unq") @db.VarChar(17)
+  plateNumber String?   @map("plate_number")
+  request     Request[]
+
+  @@map("car")
+}
+
+model Request {
+  id            Int           @id @default(autoincrement())
+  statusId      Int           @map("status_id")
+  carId         Int           @map("car_id")
+  createdAt     DateTime      @default(now()) @map("created_at") @db.Timestamptz(6)
+  car           Car           @relation(fields: [carId], references: [id])
+  requestStatus RequestStatus @relation(fields: [statusId], references: [id])
+
+  @@index([carId], map: "request_car_id")
+  @@map("request")
+}
+
+model RequestStatus {
+  id      Int       @id
+  name    String    @unique(map: "request_status_name_unq")
+  request Request[]
+
+  @@map("request_status")
+}

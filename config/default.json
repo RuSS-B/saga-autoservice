@@ -1,0 +1,13 @@
+{
+  "logger": {
+    "level": "info"
+  },
+  "prisma": {
+    "logLevel": [
+      "error"
+    ]
+  },
+  "server": {
+    "port": 3000
+  }
+}

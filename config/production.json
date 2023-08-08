@@ -1,0 +1,10 @@
+{
+  "logger": {
+    "level": "info"
+  },
+  "prisma": {
+    "logLevel": [
+      "error"
+    ]
+  }
+}
