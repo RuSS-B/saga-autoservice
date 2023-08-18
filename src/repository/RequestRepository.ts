@@ -2,14 +2,14 @@ import {Service} from "typedi";
 import PrismaRepository from "@/repository/PrismaRepository";
 import {ERequestStatus} from "@/model/RequestStatus";
 import {ICar} from "@/model/Car";
-import {RequestStatus} from ".prisma/client";
 
 @Service()
 export default class RequestRepository extends PrismaRepository {
-    public async create(carId: number) {
+    public async create(carId: number, operatorId: number) {
         return this.prisma.request.create({
             data: {
                 statusId: ERequestStatus.Open,
+                operatorId,
                 carId,
             },
         });
@@ -26,7 +26,7 @@ export default class RequestRepository extends PrismaRepository {
         });
     }
 
-    public async createWithNewCar(car: ICar) {
+    public async createWithNewCar(car: ICar, operatorId: number) {
         return this.prisma.$transaction(async (tx) => {
             const entity = await tx.car.create({
                 data: car,
@@ -35,6 +35,7 @@ export default class RequestRepository extends PrismaRepository {
             return tx.request.create({
                 data: {
                     statusId: ERequestStatus.Open,
+                    operatorId,
                     carId: entity.id,
                 },
             });

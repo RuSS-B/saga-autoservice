@@ -20,6 +20,7 @@ model Request {
   id            Int           @id @default(autoincrement())
   statusId      Int           @map("status_id")
   carId         Int           @map("car_id")
+  operatorId    Int           @map("operator_id")
   createdAt     DateTime      @default(now()) @map("created_at") @db.Timestamptz(6)
   car           Car           @relation(fields: [carId], references: [id])
   requestStatus RequestStatus @relation(fields: [statusId], references: [id])
